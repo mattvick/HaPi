@@ -1,0 +1,25 @@
+{
+    "name": "mdbitz/hapi",
+    "type": "library",
+    "description": "PHP Wrapper Library for the Harvest API",
+    "keywords": ["harvest","api"],
+    "homepage": "http://labs.mdbitz.com/harvest-api/",
+    "license": "GNU General Public License v3",
+    "authors": [
+        {
+            "name": "Matthew Denton",
+            "email": "matt@mdbitz.com",
+            "homepage": "http://mdbitz.com/",
+            "role": "Developer"
+        },
+        {
+            "name": "Matthew Vickery",
+            "email": "vickery.matthew@gmail.com",
+            "homepage": "http://matthewvickery.org/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    }
+}
