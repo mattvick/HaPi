@@ -1788,6 +1788,12 @@
      * <code>
      * $range = new Harvest_Range( "20090712", "20090719" );
      * $project_id = 11111;
+     * $filters = array (
+     *      'is_closed' => Acceptable values for the is_closed parameter are "yes" and "no".
+     *      'only_billed' => Acceptable value for the only_billed parameter is "yes". Anything else will be ignored.
+     *      'only_unbilled' => Acceptable value for the only_unbilled parameter is "yes". Anything else will be ignored.
+     *      'updated_since' => Acceptable value for the updated_since parameter is a UTC date time value, URL encoded.
+     * )
      *
      * $api = new HarvestAPI();
      *
@@ -1801,9 +1807,16 @@
      * @param Harvest_Range $range Time Range
      * @return Harvest_Result
      */
-    public function getProjectExpenses( $project_id, Harvest_Range $range ) 
+    public function getProjectExpenses( $project_id, Harvest_Range $range, $filters = null ) 
     {
         $url = "projects/" . $project_id . "/expenses?from=" . $range->from() . '&to=' . $range->to();
+
+        if (!is_null($filters) && is_array($filters)) {
+            foreach ($filters as $key => $filter) {
+                $url .= "&".$key."=" . $filter;
+            }
+        }
+
         return $this->performGET( $url, true );
     }
 
