@@ -1801,7 +1801,7 @@
      * @param Harvest_Range $range Time Range
      * @return Harvest_Result
      */
-    public function getUserExpenses( $project_id, Harvest_Range $range ) 
+    public function getProjectExpenses( $project_id, Harvest_Range $range ) 
     {
         $url = "projects/" . $project_id . "/expenses?from=" . $range->from() . '&to=' . $range->to();
         return $this->performGET( $url, true );
