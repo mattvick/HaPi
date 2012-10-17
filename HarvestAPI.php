@@ -1724,7 +1724,7 @@
                 $url .= "&".$key."=" . $filter;
             }
         }
-        return $this->harvest->performGET($url, true);
+        return $this->performGET($url, true);
     }
 
     /**
