@@ -1781,7 +1781,32 @@
         $url = "people/" . $user_id . "/expenses?from=" . $range->from() . '&to=' . $range->to();
         return $this->performGET( $url, true );
     }
-    
+
+    /**
+     * get all project expenses for given time range
+     *
+     * <code>
+     * $range = new Harvest_Range( "20090712", "20090719" );
+     * $project_id = 11111;
+     *
+     * $api = new HarvestAPI();
+     *
+     * $result = $api->getUserExpenses( $project_id, $range );
+     * if( $result->isSuccess() ) {
+     *     $expenses = $result->data;
+     * }
+     * </code>
+     * 
+     * @param int $project_id Project identifier
+     * @param Harvest_Range $range Time Range
+     * @return Harvest_Result
+     */
+    public function getUserExpenses( $project_id, Harvest_Range $range ) 
+    {
+        $url = "projects/" . $project_id . "/expenses?from=" . $range->from() . '&to=' . $range->to();
+        return $this->performGET( $url, true );
+    }
+
     /*--------------------------------------------------------------*/
     /*------------------------ Invoices API ------------------------*/
     /*--------------------------------------------------------------*/
