@@ -69,9 +69,12 @@ class Harvest_Range {
     /**
      * @return _to
      */
-	public function to( ) 
+	public function to( $rtnDateTime = false ) 
 	{
 		if( $this->_to instanceof DateTime ) {
+			if( $rtnDateTime ) {
+				return $this->_to;
+			}
 			return $this->_to->format( "Ymd" );
 		} else {
 			return $this->_to;
@@ -81,9 +84,12 @@ class Harvest_Range {
 	/**
 	 * @return _from
 	 */
-	public function from()
+	public function from( $rtnDateTime = false )
     {
 		if( $this->_from instanceof DateTime ) {
+			if( $rtnDateTime ) {
+				return $this->_from;
+			}
 			return $this->_from->format( "Ymd" );
 		} else {
 			return $this->_from;
