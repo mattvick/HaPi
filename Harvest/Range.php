@@ -120,6 +120,33 @@ class Harvest_Range {
 		$range = new Harvest_Range( $before, $now );
 		return $range;
 	}
+
+	/**
+     * return Harvest_Range object set to yesterday
+     *
+     * <code>
+	 * $range = Harvest_Range:yesterday( "EST" );
+     * </code>
+     *
+     * @param string $timeZone User Time Zone
+     * @return Harvest_Range
+     */
+	public static function yesterday( $timeZone = null )
+	{
+		$now = null;
+		$before = null;
+		if( is_null($timeZone) ) {
+			$now = new DateTime();
+			$before = new DateTime();
+		} else {
+			$now = new DateTime( "now", new DateTimeZone( $timeZone ) );
+			$before = new DateTime( "now", new DateTimeZone( $timeZone ) );
+		}
+		$now->modify( "-1 day" );
+		$before->modify( "-1 day" );
+		$range = new Harvest_Range( $before, $now );
+		return $range;
+	}
 	
 	/**
      * return Harvest_Range object set to this week
