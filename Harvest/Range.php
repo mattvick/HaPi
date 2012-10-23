@@ -239,5 +239,31 @@ class Harvest_Range {
 		$range = new Harvest_Range( $before, $now );
 		return $range;
 	}
-	
+
+	/**
+     * return Harvest_Range object set to last year
+     *
+     * <code>
+	 * $range = Harvest_Range:thisYear( "EST" );
+     * </code>
+     *
+     * @param string $timeZone User Time Zone
+     * @return Harvest_Range
+     */
+	public static function thisYear( $timeZone = null )
+	{
+		$now = null;
+		$before = null;
+		if( is_null($timeZone) ) {
+			$now = new DateTime();
+			$before = new DateTime();
+		} else {
+			$now = new DateTime( "now", new DateTimeZone( $timeZone ) );
+			$before = new DateTime( "now", new DateTimeZone( $timeZone ) );
+		}
+		$dayOfYear = $now->format( "z" );
+		$before->modify( "-$dayOfYear day" );
+		$range = new Harvest_Range( $before, $now );
+		return $range;
+	}
 }
