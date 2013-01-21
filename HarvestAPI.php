@@ -1502,6 +1502,7 @@
      *
      * <code> 
      * $userAssignment = new Harvest_UserAssignment(); 
+     * $userAssignment->set( "id", 23456 ); 
      * $userAssignment->set( "user-id", 11111 ); 
      * $userAssignment->set( "project-id", 12345 ); 
      * $userAssignment->set( "deactivated", true ); 
@@ -1516,12 +1517,14 @@
      * } 
      * </code>
      * 
+     * 
+     * 
      * @param Harvest_UserAssignment $userAssignment UserAssignment
      * @return Harvest_Result
      */
     public function updateProjectUserAssignment( Harvest_UserAssignment $userAssignment ) 
     {
-        $url = "projects/" . $userAssignment->get("project-id") . "/user_assignments/" . $userAssignment->get("user-id");
+        $url = "projects/" . $userAssignment->get("project-id") . "/user_assignments/" . $userAssignment->get("id");
         return $this->performPUT( $url, $userAssignment->toXML() );
     }
 
