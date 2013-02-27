@@ -1717,12 +1717,15 @@
      * }
      * </code>
      *
+     * @link http://www.getharvest.com/api/reporting#get-project-time
+     *
      * @param int $project_id Project Identifier
      * @param Harvest_Range $range Time Range
      * @param int $user_id User identifier optional
+     * @param array $filters Key,Value Entries
      * @return Harvest_Result
      */
-    public function getProjectEntries($project_id, \Harvest_Range $range, $user_id = null, $filters = null)
+    public function getProjectEntries($project_id, Harvest_Range $range, $user_id = null, $filters = null)
     {
         $url = "projects/" . $project_id . "/entries?from=" . $range->from() . '&to=' . $range->to();
         if (!is_null($user_id)) {
@@ -1811,6 +1814,8 @@
      *     $expenses = $result->data;
      * }
      * </code>
+     *
+     * @link http://www.getharvest.com/api/reporting#get-expenses-project
      *
      * @param int $project_id Project identifier
      * @param Harvest_Range $range Time Range
