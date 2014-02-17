@@ -47,14 +47,14 @@
  *
  * @package com.mdbitz.harvest
  */
- class HarvestAPI{
+class HarvestAPI{
 
-	/**
+    /**
      *  WAIT
      */
     const RETRY = "WAIT";
 
-	/**
+    /**
      *  FAIL
      */
     const FAIL = "FAIL";
@@ -89,7 +89,7 @@
      */
     protected static $_path;
 
-	/**
+    /**
      * @var array Header Associated Array
      */
     protected $_headers;
@@ -158,7 +158,7 @@
         $this->_ssl = $ssl;
     }
 
-	/**
+    /**
      * set retry mode
      *
      * <code>
@@ -181,7 +181,7 @@
      * $api = new HarvestAPI();
      *
      * $result = $api->getThrottleStatus();
-	 * $throttle = $result->data;
+     * $throttle = $result->data;
      * </code>
      *
      * @return Harvest_Result
@@ -247,7 +247,7 @@
         return $this->performGET( $url, false );
     }
 
-	/**
+    /**
      * toggle a timer on/off
      *
      * <code>
@@ -295,6 +295,34 @@
     public function createEntry( $entry )
     {
         $url = "daily/add";
+        return $this->performPOST( $url, $entry->toXML(), false );
+    }
+
+    /**
+     * create an entry for other user
+     *
+     * <code>
+     * $entry = new Harvest_DayEntry();
+     * $entry->set( "notes", "Test Support" );
+     * $entry->set( "hours", 3 );
+     * $entry->set( "project_id", 3 );
+     * $entry->set( "task_id", 14 );
+     * $entry->set( "spent_at", "Tue, 17 Oct 2006" );
+     *
+     * $api = new HarvestAPI();
+     *
+     * $result = $api->createEntryUser( $entry, $userid );
+     * if( $result->isSuccess() ) {
+     *     $timer = $result->data;
+     * }
+     * </code>
+     *
+     * @param $entry    Day Entry
+     * @return Harvest_Result
+     */
+    public function createEntryUser( $entry, $userid )
+    {
+        $url = "daily/add/?of_user='.$userid.'";
         return $this->performPOST( $url, $entry->toXML(), false );
     }
 
@@ -459,10 +487,10 @@
      * $client->set( "id", 11111 );
      * client->set( "name", "Company LLC" );
      * $client->set( "details", "New Company Details" );
-	 *
+     *
      * $api = new HarvestAPI();
      *
-	 * $result = $api->updateClient( $client );
+     * $result = $api->updateClient( $client );
      * if( $result->isSuccess() ) {
      *     // additional logic
      * }
@@ -534,7 +562,7 @@
      * }
      * </code>
      *
-	 * @param mixed $updated_since DateTime
+     * @param mixed $updated_since DateTime
      * @return Harvest_Result
      */
     public function getContacts($updated_since = null) {
@@ -677,7 +705,7 @@
      * }
      * </code>
      *
-	 * @param mixed $updated_since DateTime
+     * @param mixed $updated_since DateTime
      * @return Harvest_Result
      */
     public function getProjects( $updated_since = null )
@@ -686,7 +714,7 @@
         return $this->performGET( $url, true );
     }
 
-	/**
+    /**
      * get all projects of a client
      *
      * <code>
@@ -1350,7 +1378,7 @@
         return $this->performDELETE( $url );
     }
 
-	/**
+    /**
      * Get a receipt image associated with an expense
      *
      * <code>
@@ -1983,7 +2011,7 @@
     public function closeInvoice( $invoice_id )
     {
         $url = "invoices/$invoice_id/mark_as_closed";
-        return $this->performPUT( $url );
+        return $this->performPUT( $url, false );
     }
 
     /**
@@ -2238,7 +2266,7 @@
      * <code>
      * $api = new HarvestAPI();
      * $invoice_id = 1111;
-	 *
+     *
      * $result = $api->getInvoicePayments( $invoice_id );
      * if( $result->isSuccess() ) {
      *     $invoicePayments = $result->data;
@@ -2434,21 +2462,21 @@
     /*----------------- API Access & Parse Methods -----------------*/
     /*--------------------------------------------------------------*/
 
-	/**
-	 * generate the update_since query params
-	 * @param mixed $update_since DateTime
-	 * @return string
-	 */
-	public function appendUpdatedSinceParam( $updated_since = null )
-	{
-		if( is_null( $updated_since) ) {
-			return "";
-		} else if( $updated_since instanceOf DateTime ) {
-			return '?updated_since=' . urlencode($updated_since->format("Y-m-d G:i"));
-		} else {
-			return '?updated_since=' . urlencode($updated_since);
-		}
-	}
+    /**
+     * generate the update_since query params
+     * @param mixed $update_since DateTime
+     * @return string
+     */
+    public function appendUpdatedSinceParam( $updated_since = null )
+    {
+        if( is_null( $updated_since) ) {
+            return "";
+        } else if( $updated_since instanceOf DateTime ) {
+            return '?updated_since=' . urlencode($updated_since->format("Y-m-d G:i"));
+        } else {
+            return '?updated_since=' . urlencode($updated_since);
+        }
+    }
 
     /**
      * perform http get command
@@ -2458,7 +2486,7 @@
      */
     protected function performGET( $url, $multi = true )
     {
-	    $data = null;
+        $data = null;
         $code = null;
         $success = false;
         while( ! $success ) {
@@ -2491,7 +2519,7 @@
      */
     protected function generateCURL( $url )
     {
-	    $this->resetHeader();
+        $this->resetHeader();
         $http = "http://";
         if( $this->_ssl ) {
             $http = "https://";
@@ -2499,8 +2527,8 @@
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $http . $this->_account . ".harvestapp.com/" . $url );
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('User-Agent: PHP Wrapper Library for Harvest API', 'Accept: application/xml', 'Content-Type: application/xml', 'Authorization: Basic (' . base64_encode( $this->_user . ":" . $this->_password ). ')' ) );
         curl_setopt($ch, CURLOPT_HEADERFUNCTION, array(&$this,'parseHeader'));
         return $ch;
@@ -2539,7 +2567,7 @@
      */
     protected function generatePUTCURL( $url, $data )
     {
-	    $ch = $this->generateCURL( $url );
+        $ch = $this->generateCURL( $url );
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data );
         return $ch;
@@ -2568,9 +2596,9 @@
             }
         }
         if( "2" == substr( $code, 0, 1 ) ) {
-			if( $multi == "id" ) {
-				$rData = $this->_headers["Location"];
-			} else if( $multi === true ) {
+            if( $multi == "id" ) {
+                $rData = $this->_headers["Location"];
+            } else if( $multi === true ) {
                 $rData = $this->parseItems( $rData );
             } else if( $multi == "raw" ) {
                 $rData = $data;
@@ -2602,7 +2630,7 @@
      */
     protected function performDELETE( $url)
     {
-		$data = null;
+        $data = null;
         $code = null;
         $success = false;
         while( ! $success ) {
@@ -2626,7 +2654,7 @@
      */
     protected function generateDELETECURL( $url )
     {
-	    $ch = $this->generateCURL( $url );
+        $ch = $this->generateCURL( $url );
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
         return $ch;
     }
@@ -2692,7 +2720,7 @@
             }
         }
         return $items;
-	}
+    }
 
     /**
      * parse XML item
@@ -2719,66 +2747,66 @@
         {
             case "expense-category":
                 $item = new Harvest_ExpenseCategory();
-            break;
+                break;
             case "client":
                 $item = new Harvest_Client();
-            break;
+                break;
             case "contact":
                 $item = new Harvest_Contact();
-            break;
-			case "add":
-				$children = $node->childNodes;
-				foreach( $children as $child ) {
-					if( $child->nodeName == "day_entry" ) {
-						$node = $child;
-						break;
-					}
-				}
+                break;
+            case "add":
+                $children = $node->childNodes;
+                foreach( $children as $child ) {
+                    if( $child->nodeName == "day_entry" ) {
+                        $node = $child;
+                        break;
+                    }
+                }
             case "day_entry":
-			case "day-entry":
+            case "day-entry":
                 $item = new Harvest_DayEntry();
-            break;
+                break;
             case "expense":
                 $item = new Harvest_Expense();
-            break;
+                break;
             case "invoice":
                 $item = new Harvest_Invoice();
-            break;
+                break;
             case "invoice-item-category":
                 $item = new Harvest_InvoiceItemCategory();
-            break;
+                break;
             case "invoice-message":
                 $item = new Harvest_InvoiceMessage();
-            break;
+                break;
             case "payment":
                 $item = new Harvest_Payment();
-            break;
+                break;
             case "project":
                 $item = new Harvest_Project();
-            break;
+                break;
             case "task":
                 $item = new Harvest_Task();
-            break;
+                break;
             case "user":
                 $item = new Harvest_User();
-            break;
+                break;
             case "user-assignment":
                 $item = new Harvest_UserAssignment();
-            break;
+                break;
             case "task-assignment":
                 $item = new Harvest_TaskAssignment();
-            break;
+                break;
             case "daily":
                 $item = new Harvest_DailyActivity();
-            break;
+                break;
             case "timer":
                 $item = new Harvest_Timer();
-            break;
-			case "hash":
-				$item = new Harvest_Throttle();
-			break;
+                break;
+            case "hash":
+                $item = new Harvest_Throttle();
+                break;
             default:
-            break;
+                break;
         }
         if( ! is_null( $item ) ) {
             $item->parseXML( $node );
@@ -2811,7 +2839,7 @@
      */
     protected function resetHeader( )
     {
-	    $this->_headers = array();
+        $this->_headers = array();
     }
 
     /**
@@ -2820,7 +2848,7 @@
      *
      * <code>
      * // register the class auto loader
-	 * spl_autoload_register( array('HarvestAPI', 'autoload') );
+     * spl_autoload_register( array('HarvestAPI', 'autoload') );
      * </code>
      *
      * @param string $classname Name of Class to be loaded
