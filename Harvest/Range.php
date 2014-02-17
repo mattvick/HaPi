@@ -69,12 +69,9 @@ class Harvest_Range {
     /**
      * @return _to
      */
-	public function to( $rtnDateTime = false ) 
+	public function to( ) 
 	{
 		if( $this->_to instanceof DateTime ) {
-			if( $rtnDateTime ) {
-				return $this->_to;
-			}
 			return $this->_to->format( "Ymd" );
 		} else {
 			return $this->_to;
@@ -84,12 +81,9 @@ class Harvest_Range {
 	/**
 	 * @return _from
 	 */
-	public function from( $rtnDateTime = false )
+	public function from()
     {
 		if( $this->_from instanceof DateTime ) {
-			if( $rtnDateTime ) {
-				return $this->_from;
-			}
 			return $this->_from->format( "Ymd" );
 		} else {
 			return $this->_from;
@@ -117,33 +111,6 @@ class Harvest_Range {
 			$now = new DateTime( "now", new DateTimeZone( $timeZone ) );
 			$before = new DateTime( "now", new DateTimeZone( $timeZone ) );
 		}
-		$range = new Harvest_Range( $before, $now );
-		return $range;
-	}
-
-	/**
-     * return Harvest_Range object set to yesterday
-     *
-     * <code>
-	 * $range = Harvest_Range:yesterday( "EST" );
-     * </code>
-     *
-     * @param string $timeZone User Time Zone
-     * @return Harvest_Range
-     */
-	public static function yesterday( $timeZone = null )
-	{
-		$now = null;
-		$before = null;
-		if( is_null($timeZone) ) {
-			$now = new DateTime();
-			$before = new DateTime();
-		} else {
-			$now = new DateTime( "now", new DateTimeZone( $timeZone ) );
-			$before = new DateTime( "now", new DateTimeZone( $timeZone ) );
-		}
-		$now->modify( "-1 day" );
-		$before->modify( "-1 day" );
 		$range = new Harvest_Range( $before, $now );
 		return $range;
 	}
@@ -266,31 +233,5 @@ class Harvest_Range {
 		$range = new Harvest_Range( $before, $now );
 		return $range;
 	}
-
-	/**
-     * return Harvest_Range object set to last year
-     *
-     * <code>
-	 * $range = Harvest_Range:thisYear( "EST" );
-     * </code>
-     *
-     * @param string $timeZone User Time Zone
-     * @return Harvest_Range
-     */
-	public static function thisYear( $timeZone = null )
-	{
-		$now = null;
-		$before = null;
-		if( is_null($timeZone) ) {
-			$now = new DateTime();
-			$before = new DateTime();
-		} else {
-			$now = new DateTime( "now", new DateTimeZone( $timeZone ) );
-			$before = new DateTime( "now", new DateTimeZone( $timeZone ) );
-		}
-		$dayOfYear = $now->format( "z" );
-		$before->modify( "-$dayOfYear day" );
-		$range = new Harvest_Range( $before, $now );
-		return $range;
-	}
+	
 }
