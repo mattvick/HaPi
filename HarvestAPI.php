@@ -322,7 +322,7 @@ class HarvestAPI{
      */
     public function createEntryUser( $entry, $userid )
     {
-        $url = "daily/add/?of_user='.$userid.'";
+        $url = "daily/add/?of_user=$userid";
         return $this->performPOST( $url, $entry->toXML(), false );
     }
 
